@@ -1,5 +1,7 @@
 # Local VSCode on Remote Container
 
+Use your local VSCode installation to connect to containers running on a remote host.
+
 1. Create a new `docker context`
 
 ```bash
