@@ -47,7 +47,7 @@ fi
 
 ### How it works
 
-All docker containers have an environment variable called `$CONTAINER_ID`, so if we see that set to any truthy value we know we're in a container. You could add another check to see if the container name starts with `ros` or something if you have a consistent naming scheme for your containers. The worst that can happen right now is it tries and fails to source the file in containers without ROS installed.
+All docker containers have an environment variable called `$CONTAINER_ID`, so if we see that set to any truthy value we know we're in a container. You could add another check to for example, check if the container name starts with `ros`, if you have a consistent naming scheme for your containers. The worst that can happen right now is it tries and fails to source the file in containers without ROS installed.
 
 ### Small Note
 
