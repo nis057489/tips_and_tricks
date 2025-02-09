@@ -39,7 +39,7 @@ distrobox enter humble_env
 
 Add this to your shell's init file, e.g. `~/.bashrc.d/ros2.sh`. 
 
-Small Note: It's not the best idea to modify `./bashrc` directly because system updates may expect a certain set of functions to be there, and there is always a chance your changes could interfere, causing issues from benign and unnoticable to major. They provide a directory for us to place custom aliases and scripts, so please check that file for a block that looks for a directory where custom scripts should go. On my system that directory is `~/.bashrc.d/`.
+Small Note: It's not the best idea to modify `./bashrc` directly because system updates may expect a certain set of functions to be there, and there is always a chance your changes could interfere, causing issues from benign and unnoticable to major. They provide a directory for us to place custom aliases and scripts, so please check your shell run commands file for a block that looks for a directory where custom scripts should go. On my system that directory is `~/.bashrc.d/`.
 
 ### How it works
 
