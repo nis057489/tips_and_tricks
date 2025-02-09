@@ -37,7 +37,7 @@ distrobox enter humble_env
 
 ## Automatically source ROS script inside Distrobox containers
 
-Have your shell run the folloming commands at startup, that is add it to, for example: `~/.bashrc.d/ros2.sh`:
+Have your shell run the following commands at startup, that is add it to, for example: `~/.bashrc.d/ros2.sh`:
 
 ```bash
 if [[ -n "$CONTAINER_ID" ]]; then
