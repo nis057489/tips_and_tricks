@@ -37,16 +37,18 @@ distrobox enter humble_env
 
 ## Automatically source ROS script inside Distrobox containers
 
-Add this to your shell's init file, e.g. `~/.bashrc.d/ros2.sh`. 
-
-Small Note: It's not the best idea to modify `./bashrc` directly because system updates may expect a certain set of functions to be there, and there is always a chance your changes could interfere, causing issues from benign and unnoticable to major. They provide a directory for us to place custom aliases and scripts, so please check your shell run commands file for a block that looks for a directory where custom scripts should go. On my system that directory is `~/.bashrc.d/`.
-
-### How it works
-
-All docker containers have an environment variable called `$CONTAINER_ID`, so if we see that set to any truthy value we know we're in a container. You could add another check to see if the container name starts with `ros` or something if you have a consistent naming scheme for your containers. The worst that can happen right now is it tries and fails to source the file in containers without ROS installed.
+Add this to your shell's init file, e.g. `~/.bashrc.d/ros2.sh`:
 
 ```bash
 if [[ -n "$CONTAINER_ID" ]]; then
     source /opt/ros/$ROS_VERSION/setup.bash
 fi
 ```
+
+### How it works
+
+All docker containers have an environment variable called `$CONTAINER_ID`, so if we see that set to any truthy value we know we're in a container. You could add another check to see if the container name starts with `ros` or something if you have a consistent naming scheme for your containers. The worst that can happen right now is it tries and fails to source the file in containers without ROS installed.
+
+### Small Note
+
+It's not the best idea to modify `./bashrc` directly because system updates may expect a certain set of functions to be there, and there is always a chance your changes could interfere, causing issues from benign and unnoticable to major. They provide a directory for us to place custom aliases and scripts, so please check your shell run commands file for a block that looks for a directory where custom scripts should go. On my system that directory is `~/.bashrc.d/`.
