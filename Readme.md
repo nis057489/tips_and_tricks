@@ -52,3 +52,17 @@ All docker containers have an environment variable called `$CONTAINER_ID`, so if
 ### Small Note
 
 It's not the best idea to modify `~/.bashrc` directly because system updates may expect a certain set of functions to be there, and there is always a chance your changes could interfere, causing issues from benign and unnoticable to major. They provide a directory for us to place custom aliases and scripts, so please check your shell run commands file for a block that looks for a directory where custom scripts should go. On my system that directory is `~/.bashrc.d/`.
+
+For example my `.bashrc` contains this block:
+
+```bash
+# User specific aliases and functions
+if [ -d ~/.bashrc.d ]; then
+    for rc in ~/.bashrc.d/*; do
+        if [ -f "$rc" ]; then
+            . "$rc"
+        fi
+    done
+fi
+unset rc
+```
