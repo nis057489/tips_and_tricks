@@ -41,7 +41,7 @@ Have your shell run the following commands at startup, that is add it to, for ex
 
 ```bash
 if [[ -n "$CONTAINER_ID" ]]; then
-    source /opt/ros/$ROS_VERSION/setup.bash
+    source /opt/ros/$ROS_DISTRO/setup.bash
 fi
 ```
 
