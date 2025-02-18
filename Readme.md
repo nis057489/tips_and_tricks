@@ -16,10 +16,10 @@ docker context use some-context-label
 
 ## Convert ROS1 Bag to ROS2 Bag
 
-Install `rosbags-convert`:
+Install `rosbags-convert`: [rosbags](https://pypi.org/project/rosbags/)
 
 ```bash
-pip install rosbag
+pip install rosbags
 ```
 
 Run it on your `.bag` file to convert it into a `.db3` bag. Set the `-dst-typestore` to your ROS version.
