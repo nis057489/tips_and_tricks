@@ -67,3 +67,47 @@ if [ -d ~/.bashrc.d ]; then
 fi
 unset rc
 ```
+
+### Distrobox F5 VPN Setup
+Tl;dr Install the RPM version of F5 into a Fedora 42 contianer using distrobox. Exported the f5 app, launch the VPN by clicking the link in the F5 VPN website. 
+
+For reference, the container must be rootful and have net admin permissions and be using systemd to work with the F5 daemon.
+
+#### Commands
+
+##### Distrobox creation command
+
+```bash
+distrobox create utsvpn --init --image fedora:42 -a "--cap-add=NET_ADMIN" --additional-packages systemd --root
+```
+
+##### Install the F5 GUI client
+
+```bash
+sudo dnf install -y ~/Downloads/linux_f5vpn.x86_64_v7251.2025.rpm
+```
+
+##### Export the F5 app to my host so it behaves like a locally-installed app (launchable by the browser launcher and appearing in the apps menu)
+
+```bash
+distrobox-export --app /opt/f5/vpn/com.f5.f5vpn.desktop
+```
+
+#### Launch
+
+Browse to the website to start the F5 VPN, which should prompt you to launch the exported desktop app.
+
+#### Troubleshooting
+
+If you have any issues you can check the installation is correct with
+
+```bash
+rpm -ql f5vpn | grep -E 'bin/|.desktop'
+
+# should output: 
+# /opt/f5/vpn/com.f5.f5vpn.desktop
+# /opt/f5/vpn/xdg-scripts/xdg-desktop-menu
+
+# to see the actual launch command run:
+grep Exec /opt/f5/vpn/com.f5.f5vpn.desktop
+```
