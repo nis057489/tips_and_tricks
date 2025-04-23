@@ -95,7 +95,7 @@ distrobox-export --app /opt/f5/vpn/com.f5.f5vpn.desktop
 
 #### Launch
 
-Tl;dr you have to start the VPN before starting Chrome. You can quickly launch the F5 client using this one liner:
+Tl;dr Quickly launch the F5 client using this one liner:
 It will allow GUI apps to run as root, enter your container (here, called utsvpn) start the F5 client then exit. Note, the `utsvpn` container here is based on a Fedora image. If using a Debian image your path may vary, but you can get it by checking the Exec line, shown in the Troubleshooting section.
 
 ```bash
