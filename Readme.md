@@ -95,14 +95,15 @@ distrobox-export --app /opt/f5/vpn/com.f5.f5vpn.desktop
 
 #### Launch
 
-Tl;dr Quickly launch the F5 client using this one liner:
-It will allow GUI apps to run as root, enter your container (here, called utsvpn) start the F5 client then exit. Note, the `utsvpn` container here is based on a Fedora image. If using a Debian image your path may vary, but you can get it by checking the Exec line, shown in the Troubleshooting section.
+Tl;dr Quickly launch the F5 client using this one liner then start the VPN on the website. You may be prompted to enter your machine's root password to complete launching the of the app.
 
 ```bash
 xhost +local:root && distrobox enter --root utsvpn -- /opt/f5/vpn/f5vpn %u && exit
 ```
 
-Browse to the website to start the F5 VPN, which should prompt you to launch the exported desktop app.
+##### Explaination
+
+The command will allow GUI apps to run as root, enter your container (here, called utsvpn) start the F5 client then exit. Note, the `utsvpn` container here is based on a Fedora image. If using a Debian image your path may vary, but you can get it by checking the Exec line, shown in the Troubleshooting section.
 
 #### Troubleshooting
 
