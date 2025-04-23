@@ -95,6 +95,12 @@ distrobox-export --app /opt/f5/vpn/com.f5.f5vpn.desktop
 
 #### Launch
 
+Tl;dr you have to start the VPN before starting Chrome. You can quickly launch the F5 client using this one liner
+
+```bash
+xhost +local:root && distrobox enter --root /opt/f5/vpn/f5vpn %u -- exit
+```
+
 Browse to the website to start the F5 VPN, which should prompt you to launch the exported desktop app.
 
 #### Troubleshooting
