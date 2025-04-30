@@ -124,3 +124,7 @@ rpm -ql f5vpn | grep -E 'bin/|.desktop'
 # to see the actual launch command run:
 grep Exec /opt/f5/vpn/com.f5.f5vpn.desktop
 ```
+
+## Nvidia Isaac SIM inside Distrobox
+
+Best to refer to my [repo](https://github.com/nis057489/isaac_sim_wayland)
