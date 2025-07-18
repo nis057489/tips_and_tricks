@@ -33,12 +33,64 @@ Run it on your `.bag` file to convert it into a `.db3` bag. Set the `-dst-typest
 rosbags-convert --src ./your_ros1_bag.bag --dst ./your_ros2_bag --dst-typestore ros2_humble 
 ```
 
-## Distrobox - Create a standard ROS2 Dev Environment
+## Distrobox
+
+Everyone should be using Distrobox! These are some of my curated tips for robotics workflows mainly aimed at an audience that is hearing about Distrobox for the first time. The [official useful tips](https://github.com/89luca89/distrobox/blob/main/docs/useful_tips.md) is so much better though so just have a look, you're sure to find something you'll love!
+
+### Create a standard ROS2 Dev Environment
 
 ```bash
-distrobox create humble_env -i osrf/ros:humble-desktop
+distrobox create humble_env -i osrf/ros:humble-desktop-full
 distrobox enter humble_env
 ```
+
+### Clone your perfect Distrobox
+
+Need to simulate a bunch of robots running the same ROS distro? Clone an existing Distrobox with `--clone`
+
+```bash
+distrobox create humble_env -i osrf/ros:humble-desktop-full
+distrobox create --name cloned_humble_env --clone humble_env
+
+# Terminal 1
+distrobox enter humble_env
+# Terminal 2
+distrobox enter cloned_humble_env
+```
+
+### Broken container? Delete it and recreate!
+
+Because your files are stored in your host machine, not the container, you can delete and recreate the container without losing your files.
+
+```shell
+distrobox rm that_broken_env
+```
+
+### The `-p` flag
+
+```bash
+distrobox create jazzy_env -i -p osrf/ros:jazzy-desktop-full
+distrobox enter jazzy_env
+```
+
+`--pull` or `-p` for short, will pull the latest image. Handy ~~if~~*when* you encounter pesky repository *key expriation errors* like the one shown below. 
+
+```shell
+W: An error occurred during the signature verification. The repository is not updated and the previous index files will be used. GPG error: http://packages.ros.org/ros2/ubuntu noble InRelease: The following signatures were invalid: EXPKEYSIG F42ED6FBAB17C654 Open Robotics <info@osrfoundation.org>
+```
+
+But don't let chasing up stuff like this threaten your deadline, you already know how to `rm` and recreate the container from the latest image with the `-p` flag!
+
+### Using the GPU
+
+Is your host machine running NVidia proprietary drivers and do want to use the GPU in the containers? Add the `--nvidia` flag during creation. Running AMD or Intel? Support is baked in, [you don't need to do anything else](https://github.com/89luca89/distrobox/blob/main/docs/useful_tips.md#using-the-gpu-inside-the-container).
+
+```bash
+distrobox create --nvidia kilted_env -i -p  osrf/ros:kilted-desktop-full
+```
+
+Note: the `--nvidia` flag [doesn't work on ancient operating systems](https://github.com/89luca89/distrobox/blob/main/docs/usage/distrobox-create.md#nvidia-integration), those would need to [use the conatiner-toolkit](https://github.com/89luca89/distrobox/blob/main/docs/usage/distrobox-create.md#nvidia-integration).
+
 
 ## Automatically source ROS script inside Distrobox containers
 
