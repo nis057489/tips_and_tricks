@@ -110,6 +110,8 @@ Here is a pastable one-liner to do that for you:
 mkdir -p ~/.bashrc.d && cat > ~/.bashrc.d/ros2.sh <<'EOF'
 if [[ -n "$CONTAINER_ID" ]]; then
     source /opt/ros/$ROS_DISTRO/setup.bash
+fi
+EOF
 ```
 
 Then edit your `~/.bash_profile` file and add this block if it does not exist:
