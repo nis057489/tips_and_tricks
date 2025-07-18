@@ -94,7 +94,9 @@ Note: the `--nvidia` flag [doesn't work on ancient operating systems](https://gi
 
 ## Automatically source ROS script inside Distrobox containers
 
-Have your shell run the following commands at startup, that is add it to, for example: `~/.bashrc.d/ros2.sh`:
+Many people dont want to have to type `source /opt/ros/humble/setup.bash` every time they open a shell in a container; that seems like something the computer should do for us.
+
+To make it so, create a file somewhere, for example: `~/.bashrc.d/ros2.sh`, with the following contents:
 
 ```bash
 if [[ -n "$CONTAINER_ID" ]]; then
@@ -102,16 +104,15 @@ if [[ -n "$CONTAINER_ID" ]]; then
 fi
 ```
 
-### How it works
+Here is a pastable one-liner to do that for you:
 
-All docker containers have an environment variable called `$CONTAINER_ID`, so if we see that set to any truthy value we know we're in a container. You could add another check to for example, check if the container name starts with `ros`, if you have a consistent naming scheme for your containers. The worst that can happen right now is it tries and fails to source the file in containers without ROS installed.
+```bash
+mkdir -p ~/.bashrc.d && cat > ~/.bashrc.d/ros2.sh <<'EOF'
+if [[ -n "$CONTAINER_ID" ]]; then
+    source /opt/ros/$ROS_DISTRO/setup.bash
+```
 
-### Small Note
-
-It's not the best idea to modify `~/.bashrc` directly because system updates may expect a certain set of functions to be there, and there is always a chance your changes could interfere, causing issues from benign and unnoticable to major. They provide a directory for us to place custom aliases and scripts, so please check your shell run commands file for a block that looks for a directory where custom scripts should go. On my system that directory is `~/.bashrc.d/`.
-
-#### Ubuntu
-On Ubuntu I had to add add the following block) to `~/.bash_profile` after creating the `~/.bashrc.d/` directory and the `~/.bashrc.d/ros2.sh` file:
+Then edit your `~/.bash_profile` file and add this block if it does not exist:
 
 ```bash
 # User specific aliases and functions
@@ -124,6 +125,16 @@ if [ -d ~/.bashrc.d ]; then
 fi
 unset rc
 ```
+
+### How it works
+
+All docker containers have an environment variable called `$CONTAINER_ID`, so if we see that set to any truthy value we know we're in a container. You could add another check to for example, check if the container name starts with `ros`, if you have a consistent naming scheme for your containers. The worst that can happen right now is it tries and fails to source the file in containers without ROS installed.
+
+### Small Note
+
+It's not the best idea to modify `~/.bashrc` directly because system updates may expect a certain set of functions to be there, and there is always a chance your changes could interfere, causing issues from benign and unnoticable to major. They provide a directory for us to place custom aliases and scripts, so please check your shell run commands file for a block that looks for a directory where custom scripts should go. On my system that directory is `~/.bashrc.d/`.
+
+
 
 ### Distrobox F5 VPN Setup
 Tl;dr Install the RPM version of F5 into a Fedora 42 contianer using distrobox. Exported the f5 app, launch the VPN by clicking the link in the F5 VPN website. 
