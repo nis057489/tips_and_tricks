@@ -128,6 +128,8 @@ fi
 unset rc
 ```
 
+Done! Whenever you enter a distrobox container it will automatically try to source the setup script for your ROS distribution.
+
 ### How it works
 
 All docker containers have an environment variable called `$CONTAINER_ID`, so if we see that set to any truthy value we know we're in a container. You could add another check to for example, check if the container name starts with `ros`, if you have a consistent naming scheme for your containers. The worst that can happen right now is it tries and fails to source the file in containers without ROS installed.
