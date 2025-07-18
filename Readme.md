@@ -33,18 +33,18 @@ Run it on your `.bag` file to convert it into a `.db3` bag. Set the `-dst-typest
 rosbags-convert --src ./your_ros1_bag.bag --dst ./your_ros2_bag --dst-typestore ros2_humble 
 ```
 
-## Distrobox
+# Distrobox
 
 Everyone should be using Distrobox! These are some of my curated tips for robotics workflows mainly aimed at an audience that is hearing about Distrobox for the first time. The [official useful tips](https://github.com/89luca89/distrobox/blob/main/docs/useful_tips.md) is so much better though so just have a look, you're sure to find something you'll love!
 
-### Create a standard ROS2 Dev Environment
+## Create a standard ROS2 Dev Environment
 
 ```bash
 distrobox create humble_env -i osrf/ros:humble-desktop-full
 distrobox enter humble_env
 ```
 
-### Clone your perfect Distrobox
+## Clone your perfect Distrobox
 
 Need to simulate a bunch of robots running the same ROS distro? Clone an existing Distrobox with `--clone`
 
@@ -58,7 +58,7 @@ distrobox enter humble_env
 distrobox enter cloned_humble_env
 ```
 
-### Broken container? Delete it and recreate!
+## Broken container? Delete it and recreate!
 
 Because your files are stored in your host machine, not the container, you can delete and recreate the container without losing your files.
 
@@ -66,7 +66,7 @@ Because your files are stored in your host machine, not the container, you can d
 distrobox rm that_broken_env
 ```
 
-### The `-p` flag
+## The `-p` flag
 
 ```bash
 distrobox create jazzy_env -i -p osrf/ros:jazzy-desktop-full
@@ -81,7 +81,7 @@ W: An error occurred during the signature verification. The repository is not up
 
 But don't let chasing up stuff like this threaten your deadline, you already know how to `rm` and recreate the container from the latest image with the `-p` flag!
 
-### Using the GPU
+## Using the GPU
 
 Is your host machine running NVidia proprietary drivers and do want to use the GPU in the containers? Add the `--nvidia` flag during creation. Running AMD or Intel? Support is baked in, [you don't need to do anything else](https://github.com/89luca89/distrobox/blob/main/docs/useful_tips.md#using-the-gpu-inside-the-container).
 
