@@ -195,3 +195,11 @@ grep Exec /opt/f5/vpn/com.f5.f5vpn.desktop
 ## Nvidia Isaac SIM inside Distrobox
 
 Best to refer to my [repo](https://github.com/nis057489/isaac_sim_wayland)
+
+
+# Copilot access to Distrobox apps
+Export the binary to your host so that when copilot runs the command it thinks its natively installed. Then next time copilot wants to run a command it will invoke `program`, which will automatically run it inside the distrobox but copilot can still see the output.
+
+```shell
+distrobox-export --bin /path/to/my/program
+```
