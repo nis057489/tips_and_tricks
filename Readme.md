@@ -80,7 +80,6 @@ distrobox enter jazzy_env
 W: An error occurred during the signature verification. The repository is not updated and the previous index files will be used. GPG error: http://packages.ros.org/ros2/ubuntu noble InRelease: The following signatures were invalid: EXPKEYSIG F42ED6FBAB17C654 Open Robotics <info@osrfoundation.org>
 ```
 
-But don't let chasing up stuff like this threaten your deadline, you already know how to `rm` and recreate the container from the latest image with the `-p` flag!
 
 ### Using the GPU
 
