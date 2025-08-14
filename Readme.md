@@ -204,4 +204,3 @@ Export the binary to your host so that when copilot runs the command it thinks i
 ```bash
 distrobox-export --bin /path/to/my/program
 ```
-```
