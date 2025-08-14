@@ -7,13 +7,14 @@ Containerising your desktop may seem like it's harder than just installing every
 
 Use your local VSCode installation to connect to containers running on a remote host.
 
-1. Create a new `docker context`
+## 1. Create a new `docker context`
 
 ```bash
 docker context create some-context-label --docker "host=ssh://user@remote_server_ip"
 ```
+## 2. Activate the context
 
-1. Whenever you use the context, VSCode will list the remote containers instead of your local containers so you can just connect per usual.
+Whenever you use the context, VSCode will list the remote containers instead of your local containers so you can just connect per usual.
 
 ```bash
 docker context use some-context-label
@@ -96,7 +97,7 @@ Note: the `--nvidia` flag [doesn't work on ancient operating systems](https://gi
 
 Many people dont want to have to type `source /opt/ros/humble/setup.bash` every time they open a shell in a container; that seems like something the computer should do for us.
 
-To make it so, create a file somewhere, for example: `~/.bashrc.d/ros2.sh`, with the following contents:
+1. To make it so, create a file somewhere, for example: `~/.bashrc.d/ros2.sh`, with the following contents:
 
 ```bash
 if [[ -n "$CONTAINER_ID" ]]; then
@@ -114,7 +115,7 @@ fi
 EOF
 ```
 
-Then edit your `~/.bash_profile` file and add this block if it does not exist:
+2. Then edit your `~/.bash_profile` file and add this block if it does not exist:
 
 ```bash
 # User specific aliases and functions
@@ -128,7 +129,7 @@ fi
 unset rc
 ```
 
-Done! Whenever you enter a distrobox container it will automatically try to source the setup script for your ROS distribution.
+3. Done! Whenever you enter a distrobox container it will automatically try to source the setup script for your ROS distribution.
 
 ### How it works
 
@@ -147,25 +148,25 @@ For reference, the container must be rootful and have net admin permissions and 
 
 #### Commands
 
-##### Distrobox creation command
+##### 1. Distrobox creation command
 
 ```bash
 distrobox create utsvpn --init --image fedora:42 -a "--cap-add=NET_ADMIN" --additional-packages systemd --root
 ```
 
-##### Install the F5 GUI client
+##### 2. Install the F5 GUI client
 
 ```bash
 sudo dnf install -y ~/Downloads/linux_f5vpn.x86_64_v7251.2025.rpm
 ```
 
-##### Export the F5 app to my host so it behaves like a locally-installed app (launchable by the browser launcher and appearing in the apps menu)
+##### 3. Export the F5 app to my host so it behaves like a locally-installed app (launchable by the browser launcher and appearing in the apps menu)
 
 ```bash
 distrobox-export --app /opt/f5/vpn/com.f5.f5vpn.desktop
 ```
 
-#### Launch
+#### 4. Launch
 
 Tl;dr Quickly launch the F5 client using this one liner then start the VPN on the website. You may be prompted to enter your machine's root password to complete launching the of the app.
 
@@ -200,6 +201,7 @@ Best to refer to my [repo](https://github.com/nis057489/isaac_sim_wayland)
 # Copilot access to Distrobox apps
 Export the binary to your host so that when copilot runs the command it thinks its natively installed. Then next time copilot wants to run a command it will invoke `program`, which will automatically run it inside the distrobox but copilot can still see the output.
 
+## Command
 ```shell
 distrobox-export --bin /path/to/my/program
 ```
