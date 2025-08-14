@@ -2,17 +2,17 @@
 
 Containerising your desktop may seem like it's harder than just installing everything natively, but if you consider the time that goes into getting that perfect setup only to have it broken  by [dependency hell](https://en.wikipedia.org/wiki/Dependency_hell), a [faulty upgrade](https://askubuntu.com/questions/1385274/apt-repository-is-not-listed-in-etc-apt-sources-list), or any other source of chaos *when you really need the thing to work* then suddenly walling all that complexity off into a container seems much simpler, consistent and safer. And it is! This `Readme.md` contains and will accumulate ad-hoc tips and recipes for containerising various apps that some would say are "uncontainerizable", like VPNs and full 3D GPU-accelerated simulation environments. Using a container-centric image-based operating system is strongly recommended, for example Fedora Kinoite, Silverblue, or my personal choice, UBlue Aurora. (Jorge, please dont facepalm, I know we're trying to move away from the notion of a "distro", but I have to speak the lingua franca.). For a more general introduction to cloud native OS and the like, check out [Jorge Castro's youtube channel](https://www.youtube.com/watch?v=hn5xNLH-5eA)
 
-
-# Local VSCode on Remote Container
+## Local VSCode on Remote Container
 
 Use your local VSCode installation to connect to containers running on a remote host.
 
-## 1. Create a new `docker context`
+### 1. Create a new `docker context`
 
 ```bash
 docker context create some-context-label --docker "host=ssh://user@remote_server_ip"
 ```
-## 2. Activate the context
+
+### 2. Activate the context
 
 Whenever you use the context, VSCode will list the remote containers instead of your local containers so you can just connect per usual.
 
@@ -34,18 +34,18 @@ Run it on your `.bag` file to convert it into a `.db3` bag. Set the `-dst-typest
 rosbags-convert --src ./your_ros1_bag.bag --dst ./your_ros2_bag --dst-typestore ros2_humble 
 ```
 
-# Distrobox
+## Distrobox
 
 [Distrobox](https://github.com/89luca89/distrobox) is a wrapper for container runtimes (e.g. Docker) that makes it easy to create containers that *feel* like natively installed apps, providing the benfits of isolation with the convenience of integration. Everyone should be using Distrobox! These are some of my curated tips for robotics workflows mainly aimed at an audience that is hearing about Distrobox for the first time. The [official useful tips](https://github.com/89luca89/distrobox/blob/main/docs/useful_tips.md) is so much better though so just have a look, you're sure to find something you'll love!
 
-## Create a standard ROS2 Dev Environment
+### Create a standard ROS2 Dev Environment
 
 ```bash
 distrobox create humble_env -i osrf/ros:humble-desktop-full
 distrobox enter humble_env
 ```
 
-## Clone your perfect Distrobox
+### Clone your perfect Distrobox
 
 Need to simulate a bunch of robots running the same ROS distro? Clone an existing Distrobox with `--clone`
 
@@ -59,15 +59,15 @@ distrobox enter humble_env
 distrobox enter cloned_humble_env
 ```
 
-## Broken container? Delete it and recreate!
+### Broken container? Delete it and recreate!
 
 Because your files are stored in your host machine, not the container, you can delete and recreate the container without losing your files.
 
-```shell
+```bash
 distrobox rm that_broken_env
 ```
 
-## The `-p` flag
+### The `-p` flag
 
 ```bash
 distrobox create jazzy_env -i -p osrf/ros:jazzy-desktop-full
@@ -76,13 +76,13 @@ distrobox enter jazzy_env
 
 `--pull` or `-p` for short, will pull the latest image. Handy ~~if~~*when* you encounter pesky repository *key expriation errors* like the one shown below. 
 
-```shell
+```bash
 W: An error occurred during the signature verification. The repository is not updated and the previous index files will be used. GPG error: http://packages.ros.org/ros2/ubuntu noble InRelease: The following signatures were invalid: EXPKEYSIG F42ED6FBAB17C654 Open Robotics <info@osrfoundation.org>
 ```
 
 But don't let chasing up stuff like this threaten your deadline, you already know how to `rm` and recreate the container from the latest image with the `-p` flag!
 
-## Using the GPU
+### Using the GPU
 
 Is your host machine running NVidia proprietary drivers and do want to use the GPU in the containers? Add the `--nvidia` flag during creation. Running AMD or Intel? Support is baked in, [you don't need to do anything else](https://github.com/89luca89/distrobox/blob/main/docs/useful_tips.md#using-the-gpu-inside-the-container).
 
@@ -91,7 +91,6 @@ distrobox create --nvidia kilted_env -i -p  osrf/ros:kilted-desktop-full
 ```
 
 Note: the `--nvidia` flag [doesn't work on ancient operating systems](https://github.com/89luca89/distrobox/blob/main/docs/usage/distrobox-create.md#nvidia-integration), those would need to [use the conatiner-toolkit](https://github.com/89luca89/distrobox/blob/main/docs/usage/distrobox-create.md#nvidia-integration).
-
 
 ## Automatically source ROS script inside Distrobox containers
 
@@ -139,28 +138,27 @@ All docker containers have an environment variable called `$CONTAINER_ID`, so if
 
 It's not the best idea to modify `~/.bashrc` directly because system updates may expect a certain set of functions to be there, and there is always a chance your changes could interfere, causing issues from benign and unnoticable to major. They provide a directory for us to place custom aliases and scripts, so please check your shell run commands file for a block that looks for a directory where custom scripts should go. On my system that directory is `~/.bashrc.d/`.
 
+## Distrobox F5 VPN Setup
 
-
-### Distrobox F5 VPN Setup
 Tl;dr Install the RPM version of F5 into a Fedora 42 contianer using distrobox. Exported the f5 app, launch the VPN by clicking the link in the F5 VPN website. 
 
 For reference, the container must be rootful and have net admin permissions and be using systemd to work with the F5 daemon.
 
-#### Commands
+### Commands
 
-##### 1. Distrobox creation command
+#### 1. Distrobox creation command
 
 ```bash
 distrobox create utsvpn --init --image fedora:42 -a "--cap-add=NET_ADMIN" --additional-packages systemd --root
 ```
 
-##### 2. Install the F5 GUI client
+#### 2. Install the F5 GUI client
 
 ```bash
 sudo dnf install -y ~/Downloads/linux_f5vpn.x86_64_v7251.2025.rpm
 ```
 
-##### 3. Export the F5 app to my host so it behaves like a locally-installed app (launchable by the browser launcher and appearing in the apps menu)
+#### 3. Export the F5 app to my host so it behaves like a locally-installed app (launchable by the browser launcher and appearing in the apps menu)
 
 ```bash
 distrobox-export --app /opt/f5/vpn/com.f5.f5vpn.desktop
@@ -174,7 +172,7 @@ Tl;dr Quickly launch the F5 client using this one liner then start the VPN on th
 xhost +local:root && distrobox enter --root utsvpn -- /opt/f5/vpn/f5vpn %u && exit
 ```
 
-##### Explaination
+#### Explaination
 
 The command will allow GUI apps to run as root, enter your container (here, called utsvpn) start the F5 client then exit. Note, the `utsvpn` container here is based on a Fedora image. If using a Debian image your path may vary, but you can get it by checking the Exec line, shown in the Troubleshooting section.
 
@@ -197,11 +195,13 @@ grep Exec /opt/f5/vpn/com.f5.f5vpn.desktop
 
 Best to refer to my [repo](https://github.com/nis057489/isaac_sim_wayland)
 
+## Copilot access to Distrobox apps
 
-# Copilot access to Distrobox apps
 Export the binary to your host so that when copilot runs the command it thinks its natively installed. Then next time copilot wants to run a command it will invoke `program`, which will automatically run it inside the distrobox but copilot can still see the output.
 
-## Command
-```shell
+### Command
+
+```bash
 distrobox-export --bin /path/to/my/program
+```
 ```
