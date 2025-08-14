@@ -74,11 +74,7 @@ distrobox create jazzy_env -i -p osrf/ros:jazzy-desktop-full
 distrobox enter jazzy_env
 ```
 
-`--pull` or `-p` for short, will pull the latest image. Handy ~~if~~*when* you encounter pesky repository *key expriation errors* like the one shown below. 
-
-```bash
-W: An error occurred during the signature verification. The repository is not updated and the previous index files will be used. GPG error: http://packages.ros.org/ros2/ubuntu noble InRelease: The following signatures were invalid: EXPKEYSIG F42ED6FBAB17C654 Open Robotics <info@osrfoundation.org>
-```
+`--pull` or `-p` for short, will pull the latest image.
 
 
 ### Using the GPU
